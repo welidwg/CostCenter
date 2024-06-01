@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class CycleProd extends Model
 {
     use HasFactory;
+    protected $fillable=["code","description"];
 }

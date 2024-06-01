@@ -1,5 +1,14 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\CompteController;
+use App\Http\Controllers\CycleProdController;
+use App\Http\Controllers\DemandeurController;
+use App\Http\Controllers\DepartementController;
+use App\Http\Controllers\FonctionController;
+use App\Http\Controllers\SiteController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +22,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post("/login", [UserController::class, "auth"]);
+Route::get("/logout", [UserController::class, "logout"]);
+Route::get("/login", function () {
+    if (!Auth::check())
+        return view("login");
+    else return  redirect()->to('/home');
+})->name("login");
 Route::get('/', function () {
-    return view('welcome');
+    if (!Auth::check())
+        return redirect()->to('/login');
+    else return  redirect()->to('/home');
+});
+Route::get('/home', function () {
+    return view("home/home");
+});
+Route::get("/error", function () {
+    return view("errors/403");
+});
+Route::middleware(['auth'])->group(function () {
+
+    Route::post("/compte", [CompteController::class, "compte"]);
+
+    Route::middleware(['admin'])->group(function () {
+        Route::resource("/cycle", CycleProdController::class);
+        Route::resource("/departement", DepartementController::class);
+        Route::resource("/site", SiteController::class);
+        Route::resource("/fonction", FonctionController::class);
+        Route::resource("/demandeur", DemandeurController::class);
+        Route::resource("/article", ArticleController::class);
+        Route::resource("/user", UserController::class);
+        Route::get("/article/python", [ArticleController::class, "addData"]);
+        Route::get("/demandeur/python", [DemandeurController::class, "addData"]);
+    });
 });

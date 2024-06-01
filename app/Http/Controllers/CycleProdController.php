@@ -14,7 +14,7 @@ class CycleProdController extends Controller
      */
     public function index()
     {
-        //
+        return json_encode(CycleProd::all());
     }
 
     /**
@@ -35,7 +35,12 @@ class CycleProdController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            CycleProd::create($request->all());
+            return response(json_encode(["success" => 1, "message" => "Bien crée"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 200);
+        }
     }
 
     /**

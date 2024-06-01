@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Fonction;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -14,7 +15,20 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        $articles = Article::with("fonction")->get();
+        return view("article/index", compact("articles"));
+    }
+    function addData(Request $request)
+    {
+        try {
+            $fun = Fonction::where("fonction", $request->fonction)->first();
+            $data = $request->all();
+            $data["id_fonction"] = $fun->id;
+            Article::create($data);
+            return response(json_encode(["success" => 1, "message" => "Bien crée"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 200);
+        }
     }
 
     /**
@@ -24,7 +38,8 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        $fcts = Fonction::all();
+        return view("article/create", compact("fcts"));
     }
 
     /**
@@ -35,7 +50,12 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            Article::create($request->all());
+            return response(json_encode(["success" => 1, "message" => "Bien crée"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 200);
+        }
     }
 
     /**

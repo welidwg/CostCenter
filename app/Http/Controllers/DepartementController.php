@@ -14,7 +14,8 @@ class DepartementController extends Controller
      */
     public function index()
     {
-        //
+        $departements = Departement::all();
+        return view("departement/index", compact("departements"));
     }
 
     /**
@@ -24,7 +25,7 @@ class DepartementController extends Controller
      */
     public function create()
     {
-        //
+        return view("departement/create");
     }
 
     /**
@@ -35,7 +36,12 @@ class DepartementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            Departement::create($request->all());
+            return response(json_encode(["success" => 1, "message" => "Bien crée"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 200);
+        }
     }
 
     /**
