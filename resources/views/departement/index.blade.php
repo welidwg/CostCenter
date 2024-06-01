@@ -6,7 +6,7 @@
     <h1 class="text-primary text-center  mb-3 fs-4">Departments <a href="{{ route('departement.create') }}"><i
                 class="bi bi-plus-circle"></i>
         </a></h1>
-    <div class="col-md-6 mx-auto">
+    <div class="col-md-6  mx-auto table-responsive">
         <table class="table table-striped">
             <thead>
                 <tr>

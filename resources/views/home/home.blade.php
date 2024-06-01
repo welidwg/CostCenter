@@ -7,7 +7,7 @@
     use App\Models\Site;
     use App\Models\CycleProd;
     $demandeurs = Demandeur::all();
-    $articles = Article::with('fonction')->get();
+    $articles = Article::with('fonction')->orderBy('groupe', 'ASC')->get();
     $sites = Site::all();
     $cycles = CycleProd::all();
 @endphp

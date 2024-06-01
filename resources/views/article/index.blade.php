@@ -6,7 +6,7 @@
     <h1 class="text-primary text-center  mb-3 fs-4">Articles <a href="{{ route('article.create') }}"><i
                 class="bi bi-plus-circle"></i>
         </a></h1>
-    <div class="col-md-8 mx-auto">
+    <div class="col-md-12 mx-auto table-responsive">
         <table class="table table-striped col-md-8" id="table">
             <thead>
                 <tr>

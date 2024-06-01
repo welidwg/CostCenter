@@ -6,8 +6,8 @@
     <h1 class="text-primary text-center  mb-3 fs-4">Demandeurs d'achat <a href="{{ route('demandeur.create') }}"><i
                 class="bi bi-plus-circle"></i>
         </a></h1>
-    <div class="col-md-8 mx-auto">
-        <table class="table table-striped col-md-8" id="table">
+    <div class="col-md-12 mx-auto table-responsive">
+        <table class="table table-striped col-12 " id="table">
             <thead>
                 <tr>
                     <th scope="col">Matricule</th>
@@ -23,7 +23,7 @@
                     <tr>
                         <th scope="row">{{ $dm->matricule }}</th>
                         <td>{{ $dm->name }}</td>
-                        <td>{{ $dm->departement->abt }}</td>
+                        <td>{{ $dm->departement->code }} | {{ $dm->departement->description }}</td>
                         <td>{{ $dm->fonction->fonction }}</td>
                         <td>{{ $dm->site->description }}</td>
                         <td>--</td>
@@ -40,7 +40,7 @@
         </table>
     </div>
     <script>
-        new DataTable('#table');
+        $('#table').DataTable();
     </script>
 
 @endsection
