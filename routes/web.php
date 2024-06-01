@@ -8,6 +8,7 @@ use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\FonctionController;
 use App\Http\Controllers\SiteController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -21,6 +22,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get("/optimize", function () {
+    Artisan::call("optimize");
+    dd("optimized");
+});
 
 Route::post("/login", [UserController::class, "auth"]);
 Route::get("/logout", [UserController::class, "logout"]);
