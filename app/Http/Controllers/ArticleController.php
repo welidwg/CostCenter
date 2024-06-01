@@ -54,7 +54,7 @@ class ArticleController extends Controller
             Article::create($request->all());
             return response(json_encode(["success" => 1, "message" => "Bien crée"]), 200);
         } catch (\Throwable $th) {
-            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 200);
+            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 500);
         }
     }
 

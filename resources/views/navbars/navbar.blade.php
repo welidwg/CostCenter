@@ -22,7 +22,7 @@
                                 <li><a class="dropdown-item" href="{{ route('user.index') }}">Users</a></li>
                                 <li><a class="dropdown-item" href="{{ route('departement.index') }}">Departements</a>
                                 </li>
-                                {{-- <li><a class="dropdown-item" href="#">Sites</a></li> --}}
+                                <li><a class="dropdown-item" href="{{ route('fonction.index') }}">Fonctions</a></li>
                                 <li><a class="dropdown-item" href="{{ route('article.index') }}">Articles</a></li>
                                 {{-- <li><a class="dropdown-item" href="#">Cycles de production</a></li> --}}
                                 <li><a class="dropdown-item" href="{{ route('demandeur.index') }}">Demandeurs

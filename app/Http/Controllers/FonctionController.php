@@ -14,7 +14,8 @@ class FonctionController extends Controller
      */
     public function index()
     {
-        return json_encode(Fonction::all());
+        $fonctions = Fonction::all();
+        return view("fonction/index", compact("fonctions"));
     }
 
     /**
@@ -24,7 +25,7 @@ class FonctionController extends Controller
      */
     public function create()
     {
-        //
+        return view("fonction/create");
     }
 
     /**
@@ -39,7 +40,7 @@ class FonctionController extends Controller
             Fonction::create($request->all());
             return response(json_encode(["success" => 1, "message" => "Bien crée"]), 200);
         } catch (\Throwable $th) {
-            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 200);
+            return response(json_encode(["success" => 0, "message" => $th->getMessage()]), 500);
         }
     }
 
