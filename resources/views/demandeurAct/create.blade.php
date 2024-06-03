@@ -1,12 +1,12 @@
 @extends('layout')
 
-@section('title', 'Demandeur ECT')
+@section('title', 'Demandeur ACT')
 
 @section('content')
-    <h1 class="text-primary text-center  mb-3 fs-4"> <a href="{{ route('demandeur.index') }}"><i
+    <h1 class="text-primary text-center  mb-3 fs-4"> <a href="{{ route('demandeurAct.index') }}"><i
                 class="bi bi-arrow-left"></i></a>
         Add
-        Demandeur ECT </h1>
+        Demandeur ACT </h1>
     <div class="mx-auto col-md-6">
         <div class="mb-3">
             <label class="form-label">Matricule</label>
@@ -24,14 +24,7 @@
                 @endforeach
             </select>
         </div>
-        <div class="mb-3">
-            <label class="form-label">Site</label>
-            <select name="site" id="site" class="form-select form-select-lg mb-3">
-                @foreach ($sites as $site)
-                    <option value="{{ $site->id }}"> {{ $site->description }}</option>
-                @endforeach
-            </select>
-        </div>
+
         <div class="mb-3">
             <label class="form-label">Fonction</label>
             <select name="fct" id="fct" class="form-select form-select-lg mb-3">
@@ -56,18 +49,17 @@
                     "matricule": $("#mat").val(),
                     "name": $("#name").val(),
                     "id_departement": $("#dept").val(),
-                    "id_site": $("#site").val(),
                     "id_fonction": $("#fct").val(),
                     "groupe_article": $("#grp").val()
                 }
-                axios.post("/demandeur", data, {
+                axios.post("/demandeurAct", data, {
                         headers: {
                             "Content-type": "application/json"
                         }
                     })
                     .then(res => {
                         console.log(res)
-                        window.location.href = `{{ route('demandeur.index') }}`
+                        window.location.href = `{{ route('demandeurAct.index') }}`
                     })
                     .catch(err => {
                         console.error(err);
@@ -75,10 +67,6 @@
             })
             $(document).ready(function() {
                 $("#fct").select2({
-                    theme: "bootstrap-5"
-                });
-
-                $("#site").select2({
                     theme: "bootstrap-5"
                 });
 

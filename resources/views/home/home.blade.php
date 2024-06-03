@@ -2,11 +2,27 @@
 
 @section('title', 'Home')
 @php
+
     use App\Models\Demandeur;
+    use App\Models\DemandeurAct;
     use App\Models\Article;
     use App\Models\Site;
     use App\Models\CycleProd;
-    $demandeurs = Demandeur::all();
+    use Illuminate\Support\Facades\Request;
+    $data = 'ECT';
+    if (Request::get('type')) {
+        $data = Request::get('type');
+    }
+
+    if (Auth::user()->role == 0) {
+        $demandeurs = Auth::user()->type == 0 ? Demandeur::all() : DemandeurAct::all();
+    } else {
+        if ($data == 'ECT') {
+            $demandeurs = Demandeur::all();
+        } else {
+            $demandeurs = DemandeurAct::all();
+        }
+    }
     $articles = Article::with('fonction')->orderBy('groupe', 'ASC')->get();
     $sites = Site::all();
     $cycles = CycleProd::all();
@@ -14,17 +30,48 @@
 @section('content')
     <div class="my-auto">
         <h1 class="text-primary text-center mb-5">COST CENTER</h1>
+        @if (Auth::user()->role == 1)
+            <div class="mb-3 col-md-4 mx-auto">
+                <select class="form-select form-select-lg" id="select_type">
+                    <option selected value="{{ $data }}">{{ $data }}</option>
+                    @if ($data == 'ECT')
+                        <option value="ACT">ACT</option>
+                    @else
+                        <option value="ECT">ECT</option>
+                    @endif
+
+                </select>
+            </div>
+            <script>
+                $(document).ready(function() {
+                    $("#select_type").on("change", (e) => {
+                        let val = $("#select_type").val();
+                        window.location.href = `/home?type=${val}`
+                    })
+                });
+            </script>
+        @endif
+
 
         <div class="row">
 
             <div class="col-md-6">
-                <label class="mb-2 fw-bold fs-5" for="">Demandeur d'achat</label>
+                <label class="mb-2 fw-bold fs-5" for="">
+                    <span> Demandeur d'achat </span>
+
+
+                    @if (Auth::user()->role == 1)
+                        ({{ $data }})
+                    @else
+                        ({{ Auth::user()->type == 0 ? 'ECT' : 'ACT' }})
+                    @endif
+                </label>
                 <select name="id_demandeur" id="id_demandeur" class="select-changement form-select form-select-lg">
                     @foreach ($demandeurs as $demandeur)
                         <option value="{{ $demandeur->id }}">{{ $demandeur->name }}</option>
                     @endforeach
                 </select>
-                <section class="w-100 mt-2 rounded p-3 ">
+                <section class="w-100 mb-2 rounded p-3 ">
                     Matricule : <span id="matt"></span>
                     <br>
                     Département : <span id="dept"></span>
@@ -37,7 +84,7 @@
                         <option value="{{ $article->id }}">{{ $article->designation_court }}</option>
                     @endforeach
                 </select>
-                <section class="mt-2 mb-3 w-100 rounded p-3 ">
+                <section class=" mb-2 w-100 rounded p-3 ">
                     Fonction : <span id="fct"></span>
                     <br>
                     Groupe Article : <span id="grp"></span>

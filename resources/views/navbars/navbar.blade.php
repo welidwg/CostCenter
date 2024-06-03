@@ -12,6 +12,9 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/">Home</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/profile">Profile</a>
+                    </li>
                     @if (Auth::user()->role == 1)
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
@@ -26,7 +29,9 @@
                                 <li><a class="dropdown-item" href="{{ route('article.index') }}">Articles</a></li>
                                 {{-- <li><a class="dropdown-item" href="#">Cycles de production</a></li> --}}
                                 <li><a class="dropdown-item" href="{{ route('demandeur.index') }}">Demandeurs
-                                        d'achats</a></li>
+                                        d'achats ECT</a></li>
+                                <li><a class="dropdown-item" href="{{ route('demandeurAct.index') }}">Demandeurs
+                                        d'achats ACT</a></li>
 
                             </ul>
                         </li>
@@ -34,14 +39,14 @@
                 </ul>
                 @auth
                     <div class="d-flex justify-content-center align-items-center">
-                        <div class="text-dark">
-                            {{ Auth::user()->login }} | {{ Auth::user()->role == 1 ? 'Admin' : 'User' }}&nbsp;
+                        <div style="text-decoration: none" class="text-dark fw-bold">
+                            {{ Auth::user()->login }} | {{ Auth::user()->role == 1 ? 'Admin' : 'User' }}
+                            {{ Auth::user()->role == 0 ? (Auth::user()->type == 0 ? 'ECT' : 'ACT') : '' }}&nbsp;
                         </div>
                         <a href="/logout" class="btn btn-danger">Logout</a>
                     </div>
                 @endauth
-                @if (Auth::check())
-                @endif
+
 
 
             </div>

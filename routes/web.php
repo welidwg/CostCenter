@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CompteController;
 use App\Http\Controllers\CycleProdController;
+use App\Http\Controllers\DemandeurActController;
 use App\Http\Controllers\DemandeurController;
 use App\Http\Controllers\DepartementController;
 use App\Http\Controllers\FonctionController;
@@ -46,16 +47,23 @@ Route::get('/home', function () {
 Route::get("/error", function () {
     return view("errors/403");
 });
+
+//Route::get("/accounts", [UserController::class, "accountCreator"]);
+Route::get("/allUsers/{type}", [UserController::class, "allUsers"]);
 Route::middleware(['auth'])->group(function () {
 
     Route::post("/compte", [CompteController::class, "compte"]);
-
+    Route::get('/profile', function () {
+        return  view("profile/index");
+    })->name("profile");
+    Route::post("/profile/{id}", [UserController::class, "changePassword"])->name("user.password");
     Route::middleware(['admin'])->group(function () {
         Route::resource("/cycle", CycleProdController::class);
         Route::resource("/departement", DepartementController::class);
         Route::resource("/site", SiteController::class);
         Route::resource("/fonction", FonctionController::class);
         Route::resource("/demandeur", DemandeurController::class);
+        Route::resource("/demandeurAct", DemandeurActController::class);
         Route::resource("/article", ArticleController::class);
         Route::resource("/user", UserController::class);
         Route::get("/article/python", [ArticleController::class, "addData"]);

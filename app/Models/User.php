@@ -16,5 +16,6 @@ class User extends Authenticatable
         'login',
         'role',
         'password',
+        "type"
     ];
 }

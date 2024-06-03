@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Demandeur;
+use App\Models\DemandeurAct;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -36,6 +38,12 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+    function allUsers($type)
+    {
+        $no = $type == "ECT" ? 0 : 1;
+        return json_encode(User::where("type", $no)->where("role", 0)->get());
+    }
     public function store(Request $request)
     {
         try {
@@ -97,9 +105,50 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+    }
+    function changePassword(Request $request, $id)
+    {
+        try {
+            $user = User::find($id);
+            $newPass = Hash::make($request->password);
+            $user->update(["password" => $newPass]);
+            return response(json_encode(["success" => 1, "message" => "Updated"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 
+    function accountCreator()
+    {
+        $ects = Demandeur::all();
+        $arr = [];
+        $pass = Hash::make("0000");
+        foreach ($ects as $ect) {
+            $name = explode(" ", $ect->name);
+            $login = "";
+            if (count($name) > 2) {
+                $login = $name[0] . $name[1] . "_" . $name[2];
+            } else {
+                $login = $name[0] . "_" . $name[1];
+            }
+            array_push($arr, $login);
+            User::create(["login" => $login, "password" => $pass, "role" => 0, "type" => 0]);
+        }
+        $acts = DemandeurAct::all();
+        foreach ($acts as $act) {
+            $name = explode(" ", $act->name);
+            $login = "";
+            if (count($name) > 2) {
+                $login = $name[0] . $name[1] . "_" . $name[2];
+            } else {
+                $login = $name[0] . "_" . $name[1];
+            }
+            array_push($arr, $login);
+            User::create(["login" => $login, "password" => $pass, "role" => 0, "type" => 1]);
+        }
+
+        return json_encode(["names" => $arr]);
+    }
     /**
      * Remove the specified resource from storage.
      *
