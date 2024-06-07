@@ -14,6 +14,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Department</th>
                     <th scope="">Fonction</th>
+                    <th scope="">Site</th>
                     <th scope="">Groupe article</th>
                     <th scope="">Action</th>
                 </tr>
@@ -28,6 +29,7 @@
                         <td>{{ $dm->name }}</td>
                         <td>{{ $dm->departement->code }} | {{ $dm->departement->description }}</td>
                         <td>{{ $dm->fonction->fonction }}</td>
+                        <td>1 | SL</td>
                         <td>{{ $dm->groupe_article }}</td>
                         <td>--</td>
                     </tr>
