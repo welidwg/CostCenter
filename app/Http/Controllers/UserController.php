@@ -83,6 +83,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         //
+        return view('users/show', compact("user"));
     }
 
     /**
@@ -105,6 +106,16 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
+        try {
+            $data = $request->all();
+            if ($data["newPass"] != "") {
+                $data["password"] = Hash::make($request->newPass);
+            }
+            $user->update($data);
+            return response(json_encode(["success" => 1, "message" => "Updated"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
     function changePassword(Request $request, $id)
     {
@@ -157,6 +168,22 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try {
+            $user->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
+    }
+
+    function delete($id)
+    {
+        try {
+            $user = User::find($id);
+            $user->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 }

@@ -66,7 +66,9 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        //
+
+        $fcts = Fonction::where("id", "!=", $article->id_fonction)->get();
+        return view("article/show", compact("article", "fcts"));
     }
 
     /**
@@ -89,7 +91,13 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-        //
+        try {
+            $data = $request->all();
+            $article->update($data);
+            return response(json_encode(["success" => 1, "message" => "Updated"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 
     /**
@@ -100,6 +108,22 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        //
+        try {
+            $article->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
+    }
+
+    function delete($id)
+    {
+        try {
+            $art = Article::find($id);
+            $art->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 }

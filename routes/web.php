@@ -59,13 +59,27 @@ Route::middleware(['auth'])->group(function () {
     Route::post("/profile/{id}", [UserController::class, "changePassword"])->name("user.password");
     Route::middleware(['admin'])->group(function () {
         Route::resource("/cycle", CycleProdController::class);
+
+        Route::post("departement/delete/{id}", [DepartementController::class, "delete"])->name("departement.delete");
         Route::resource("/departement", DepartementController::class);
+
         Route::resource("/site", SiteController::class);
+
+        Route::post("fonction/delete/{id}", [FonctionController::class, "delete"])->name("fonction.delete");
         Route::resource("/fonction", FonctionController::class);
+
+        Route::post("demandeur/delete/{id}", [DemandeurController::class, "delete"])->name("demandeur.delete");
         Route::resource("/demandeur", DemandeurController::class);
+
+        Route::post("demandeurAct/delete/{id}", [DemandeurActController::class, "delete"])->name("demandeurAct.delete");
         Route::resource("/demandeurAct", DemandeurActController::class);
+
+        Route::post("article/delete/{id}", [ArticleController::class, "delete"])->name("article.delete");
         Route::resource("/article", ArticleController::class);
+
+        Route::post("user/delete/{id}", [UserController::class, "delete"])->name("user.delete");
         Route::resource("/user", UserController::class);
+
         Route::get("/article/python", [ArticleController::class, "addData"]);
         Route::get("/demandeur/python", [DemandeurController::class, "addData"]);
     });

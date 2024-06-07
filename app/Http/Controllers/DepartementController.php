@@ -52,7 +52,7 @@ class DepartementController extends Controller
      */
     public function show(Departement $departement)
     {
-        //
+        return view("departement/show", compact("departement"));
     }
 
     /**
@@ -75,7 +75,13 @@ class DepartementController extends Controller
      */
     public function update(Request $request, Departement $departement)
     {
-        //
+        try {
+            $data = $request->all();
+            $departement->update($data);
+            return response(json_encode(["success" => 1, "message" => "Updated"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 
     /**
@@ -86,6 +92,22 @@ class DepartementController extends Controller
      */
     public function destroy(Departement $departement)
     {
-        //
+        try {
+            $departement->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
+    }
+
+    function delete($id)
+    {
+        try {
+            $departement = Departement::find($id);
+            $departement->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 }

@@ -22,8 +22,25 @@
                         <th scope="row">{{ $fct->fonction }}</th>
                         <td>{{ $fct->description }}</td>
                         <td>{{ $fct->code }}</td>
-                        <td>--</td>
+                        <td> <a href="{{ route('fonction.show', $fct) }}"><i class="bi bi-pen"></i></a>
+                            <a id="delete{{ $fct->id }}" class="text-danger"><i class="bi bi-trash3"></i></a>
+
+                        </td>
                     </tr>
+                    <script>
+                        $("#delete{{ $fct->id }}").on("click", (e) => {
+                            if (confirm("Are you sure you want to delete this fonction ?")) {
+                                axios.post("{{ route('fonction.delete', $fct->id) }}")
+                                    .then(res => {
+                                        console.log(res)
+                                        window.location.reload();
+                                    })
+                                    .catch(err => {
+                                        console.error(err.response.data);
+                                    })
+                            }
+                        })
+                    </script>
                 @empty
                     <td>
 

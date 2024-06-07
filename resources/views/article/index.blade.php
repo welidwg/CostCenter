@@ -24,8 +24,26 @@
                         <td>{{ $art->designation_court }}</td>
                         <td>{{ $art->designation_long }}</td>
                         <td>{{ $art->fonction->fonction }}</td>
-                        <td>--</td>
+                        <td>
+                            <a href="{{ route('article.show', $art) }}"><i class="bi bi-pen"></i></a>
+                            <a id="delete{{ $art->id }}" class="text-danger"><i class="bi bi-trash3"></i></a>
+
+                        </td>
                     </tr>
+                    <script>
+                        $("#delete{{ $art->id }}").on("click", (e) => {
+                            if (confirm("Are you sure you want to delete this Article?")) {
+                                axios.post("{{ route('article.delete', $art->id) }}")
+                                    .then(res => {
+                                        console.log(res)
+                                        window.location.reload();
+                                    })
+                                    .catch(err => {
+                                        console.error(err.response.data);
+                                    })
+                            }
+                        })
+                    </script>
                 @empty
                     <td>
 

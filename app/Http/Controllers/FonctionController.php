@@ -52,7 +52,7 @@ class FonctionController extends Controller
      */
     public function show(Fonction $fonction)
     {
-        //
+        return view("fonction/show", compact("fonction"));
     }
 
     /**
@@ -75,7 +75,13 @@ class FonctionController extends Controller
      */
     public function update(Request $request, Fonction $fonction)
     {
-        //
+        try {
+            $data = $request->all();
+            $fonction->update($data);
+            return response(json_encode(["success" => 1, "message" => "Updated"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 
     /**
@@ -86,6 +92,22 @@ class FonctionController extends Controller
      */
     public function destroy(Fonction $fonction)
     {
-        //
+        try {
+            $fonction->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
+    }
+
+    function delete($id)
+    {
+        try {
+            $fonction = Fonction::find($id);
+            $fonction->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 }

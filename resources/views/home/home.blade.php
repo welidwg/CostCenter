@@ -92,11 +92,45 @@
             </div>
             <div class="col-md-6">
                 <label class="mb-2 fw-bold fs-5" for="">Choix de site</label>
-                <select name="id_site" id="id_site" class="select-changement form-select form-select-lg mb-3">
-                    @foreach ($sites as $site)
-                        <option value="{{ $site->id }}">{{ $site->code }} | {{ $site->description }}</option>
-                    @endforeach
-                </select>
+                @if (Auth::user()->role == 1)
+                    @if ($data == 'ECT')
+                        <select name="id_site" id="id_site" class="select-changement form-select form-select-lg mb-3">
+                            @foreach ($sites as $site)
+                                <option value="{{ $site->id }}">{{ $site->code }} | {{ $site->description }}</option>
+                            @endforeach
+                        </select>
+                        <script>
+                            $("#id_site").select2({
+                                theme: 'bootstrap-5'
+                            });
+                        </script>
+                    @else
+                        <input type="text" id="id_site" value="1" hidden>
+                        <input type="text" class=" mb-3 form-control shadow-none form-control-lg " readonly
+                            value="1 | SL">
+
+                    @endif
+                @else
+                    @if (Auth::user()->type == 0)
+                        <select name="id_site" id="id_site" class="select-changement form-select form-select-lg mb-3">
+                            @foreach ($sites as $site)
+                                <option value="{{ $site->id }}">{{ $site->code }} | {{ $site->description }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <script>
+                            $("#id_site").select2({
+                                theme: 'bootstrap-5'
+                            });
+                        </script>
+                    @else
+                        <input type="text" id="id_site" value="1" hidden>
+                        <input type="text" class=" mb-3 form-control form-control-lg shadow-none  " readonly
+                            value="1 | SL">
+                    @endif
+
+                @endif
+
             </div>
             <div class="col-md-6">
                 <label class="mb-2 fw-bold fs-5" for="">Choix de cycle de production</label>
@@ -161,9 +195,7 @@
                 $("#id_demandeur").select2({
                     theme: 'bootstrap-5'
                 });
-                $("#id_site").select2({
-                    theme: 'bootstrap-5'
-                });
+
                 $("#id_article").select2({
                     theme: 'bootstrap-5'
                 });

@@ -58,7 +58,11 @@ class DemandeurActController extends Controller
      */
     public function show(DemandeurAct $demandeurAct)
     {
-        //
+        $demandeur = $demandeurAct;
+        $fcts = Fonction::where("id", "!=", $demandeurAct->id_fonction)->get();
+        $depts = Departement::where("id", "!=", $demandeurAct->id_departement)->get();
+        $articles = Article::where("groupe", "!=", $demandeurAct->groupe_article)->get();
+        return view("demandeurAct/show", compact("articles", "fcts",  "depts", "demandeur"));
     }
 
     /**
@@ -81,7 +85,13 @@ class DemandeurActController extends Controller
      */
     public function update(Request $request, DemandeurAct $demandeurAct)
     {
-        //
+        try {
+            $data = $request->all();
+            $demandeurAct->update($data);
+            return response(json_encode(["success" => 1, "message" => "Updated"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 
     /**
@@ -92,6 +102,22 @@ class DemandeurActController extends Controller
      */
     public function destroy(DemandeurAct $demandeurAct)
     {
-        //
+        try {
+            $demandeurAct->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
+    }
+
+    function delete($id)
+    {
+        try {
+            $demandeur = DemandeurAct::find($id);
+            $demandeur->delete();
+            return response(json_encode(["success" => 1, "message" => "Deleted"]), 200);
+        } catch (\Throwable $th) {
+            return response(json_encode(["type" => "error", "message" => $th->getMessage()]), 500);
+        }
     }
 }

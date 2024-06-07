@@ -24,8 +24,25 @@
                         <td>{{ $user->login }}</td>
                         <td>{{ $user->role == 0 ? 'User' : 'Admin' }}</td>
                         <td>{{ $user->type == 0 ? 'ECT' : 'ACT' }}</td>
-                        <td>--</td>
+                        <td>
+                            <a href="{{ route('user.show', $user) }}"><i class="bi bi-pen"></i></a>
+                            <a id="delete{{ $user->id }}" class="text-danger"><i class="bi bi-trash3"></i></a>
+                        </td>
                     </tr>
+                    <script>
+                        $("#delete{{ $user->id }}").on("click", (e) => {
+                            if (confirm("Are you sure you want to delete this user ?")) {
+                                axios.post("{{ route('user.delete', $user->id) }}")
+                                    .then(res => {
+                                        console.log(res)
+                                        window.location.reload();
+                                    })
+                                    .catch(err => {
+                                        console.error(err.response.data);
+                                    })
+                            }
+                        })
+                    </script>
                 @empty
                     <td>
 

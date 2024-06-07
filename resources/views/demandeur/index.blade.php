@@ -29,8 +29,27 @@
                         <td>{{ $dm->site->description }}</td>
                         <td>{{ $dm->groupe_article }}</td>
 
-                        <td>--</td>
+                        <td>
+                            <a href="{{ route('demandeur.show', $dm) }}"><i class="bi bi-pen"></i></a>
+
+                            <a id="delete{{ $dm->id }}" class="text-danger"><i class="bi bi-trash3"></i></a>
+
+                        </td>
                     </tr>
+                    <script>
+                        $("#delete{{ $dm->id }}").on("click", (e) => {
+                            if (confirm("Are you sure you want to delete this Demandeur ECT ?")) {
+                                axios.post("{{ route('demandeur.delete', $dm->id) }}")
+                                    .then(res => {
+                                        console.log(res)
+                                        window.location.reload();
+                                    })
+                                    .catch(err => {
+                                        console.error(err.response.data);
+                                    })
+                            }
+                        })
+                    </script>
                 @empty
                     <td>
 
